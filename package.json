@@ -1,0 +1,82 @@
+{
+  "name": "coc-scala",
+  "version": "0.0.0",
+  "description": "Scala extension for coc",
+  "author": "josa@gesell.me",
+  "license": "MIT",
+  "main": "lib/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josa42/coc-scala.git"
+  },
+  "engines": {
+    "coc": "^0.0.73"
+  },
+  "keywords": [
+    "coc.nvim",
+    "languageserver",
+    "scala"
+  ],
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc --watch -p tsconfig.json",
+    "build:metals": "mkdir -p bin/ && coursier bootstrap --java-opt -Xss4m --java-opt -Xms100m --java-opt -Dmetals.client=coc.nvim org.scalameta:metals_2.12:0.7.6 -r bintray:scalacenter/releases -r sonatype:snapshots -o bin/metals-vim -f",
+    "prepare": "yarn clean && yarn build",
+    "lint": "eslint . --ext .ts,.js",
+    "prepublish": "npm run build:metals"
+  },
+  "activationEvents": [
+    "onLanguage:scala",
+    "onLanguage:sbt",
+    "onCommand:sbt.version"
+  ],
+  "contributes": {
+    "rootPatterns": [
+      {
+        "filetype": "scala",
+        "patterns": [
+          "build.sbt"
+        ]
+      },
+      {
+        "filetype": "sbt",
+        "patterns": [
+          "build.sbt"
+        ]
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "scala",
+      "properties": {
+        "sh.enable": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "scala.binaryPath": {
+        "type": "string"
+      }
+    },
+    "commands": [
+      {
+        "command": "scala.version",
+        "title": "Print extension version"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.6",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "coc.nvim": "0.0.74",
+    "eslint": "^6.6.0",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "pkg-dir": "^4.2.0",
+    "tslib": "^1.10.0"
+  }
+}
