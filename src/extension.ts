@@ -19,8 +19,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     const choice = await workspace.showQuickpick([
       "Replace coc-scala with the official coc-metals extension (recommended)",
       "Remove remove coc-scala",
-      "Keep using coc-scala"
-    ], "coc-scala is deprecated! Choose one of these actions (NOT recommended)")
+      "Keep using coc-scala (NOT recommended)"
+    ], "coc-scala is deprecated! Choose one of these actions")
 
     // await workspace.showMessage("" + choice)
     await new Promise((resolve) => setTimeout(resolve, 500))
