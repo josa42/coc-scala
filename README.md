@@ -1,3 +1,9 @@
+# THIS PROJECT IS NO LONGER BEING MAINTAINED
+
+Please use the official [`coc-metals`](https://github.com/scalameta/coc-metals) extension!
+
+--------------------------------------------------------------------------------
+
 # coc-scala
 
 Scala language server extension using [`Metals`](https://scalameta.org/metals/)

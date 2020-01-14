@@ -50,13 +50,17 @@
       "type": "object",
       "title": "scala",
       "properties": {
-        "sh.enable": {
+        "keepUsing": {
+          "type": "boolean",
+          "default": false
+        },
+        "enable": {
           "type": "boolean",
           "default": true
+        },
+        "binaryPath": {
+          "type": "string"
         }
-      },
-      "scala.binaryPath": {
-        "type": "string"
       }
     },
     "commands": [

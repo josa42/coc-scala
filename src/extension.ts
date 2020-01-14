@@ -1,10 +1,11 @@
 import path from 'path'
 import fs from 'fs'
 import pkgDir from 'pkg-dir'
-import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, LanguageClientOptions } from 'coc.nvim'
+import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, LanguageClientOptions, extensions } from 'coc.nvim'
 
 interface ScalaConfig {
   enable: boolean
+  keepUsing: boolean
   binaryPath: string
 }
 
@@ -12,6 +13,29 @@ export async function activate(context: ExtensionContext): Promise<void> {
   const config = workspace.getConfiguration().get('scala', {}) as ScalaConfig
   if (config.enable === false) {
     return
+  }
+
+  if (config.keepUsing !== true) {
+    const choice = await workspace.showQuickpick([
+      "Replace coc-scala with the official coc-metals extension (recommended)",
+      "Remove remove coc-scala",
+      "Keep using coc-scala"
+    ], "coc-scala is deprecated! Choose one of these actions (NOT recommended)")
+
+    // await workspace.showMessage("" + choice)
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    switch (choice) {
+      case 0:
+        await extensions.uninstallExtension(['coc-scala'])
+        await extensions.installExtensions(['coc-metals'])
+        return
+      case 1:
+        await extensions.uninstallExtension(['coc-scala'])
+        return
+      case 2:
+        workspace.getConfiguration().update('scala', { ...config, keepUsing: true }, true)
+    }
   }
 
   const serverOptions: ServerOptions = {
